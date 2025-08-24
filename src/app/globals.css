@@ -1,5 +1,27 @@
 @import "tailwindcss";
-
 @theme {
   --color-primary: #6c63ff;
+  --animate-dialogOpen: dialogOpen 0.2s ease-in-out;
+  --animate-dialogClosed: dialogClosed 0.2s ease-in-out;
+
+  @keyframes dialogOpen {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes dialogClosed {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+body .radix-themes {
+  background-color: #fbfaf8 !important;
 }

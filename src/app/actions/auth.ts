@@ -1,12 +1,12 @@
 import z from "zod";
 import axios from "axios";
 import { redirect } from "next/navigation";
-import { createSession } from "@/app/libs/session";
+import { createSession } from "@/libs/session";
 
 const SignupFormSchema = z.object({
   email: z
     .email()
-    .endsWith("@madlogy.com", {
+    .endsWith("@usermanager.com", {
       message: "Email invalide",
     })
     .max(100),

@@ -20,13 +20,15 @@ export const decrypt = async (session) => {
     });
     return payload;
   } catch (error) {
+    return null;
     console.log("Echet de vérifiation", error);
   }
 };
 
 export const createSession = async (user) => {
+  const data = user.data;
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
-  const session = await encrypt({ user, expiresAt });
+  const session = await encrypt({ data, expiresAt });
   const cookieStore = await cookies();
 
   cookieStore.set("session", session, {

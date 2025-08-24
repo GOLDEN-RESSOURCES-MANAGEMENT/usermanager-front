@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import "../globals.css";
+import "@radix-ui/themes/styles.css";
+import { DefaultLayout } from "@/components/Layout";
+import { Theme } from "@radix-ui/themes";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const geistMono = Nunito({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
@@ -24,9 +27,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-[#fbfaf8] antialiased`}
       >
-        <div className="">{children}</div>
+        <div className="">
+          <Theme>
+            <DefaultLayout>{children}</DefaultLayout>
+          </Theme>
+        </div>
       </body>
     </html>
   );

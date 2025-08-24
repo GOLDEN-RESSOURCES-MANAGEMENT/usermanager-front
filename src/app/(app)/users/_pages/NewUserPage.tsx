@@ -23,7 +23,7 @@ export default function NewUserPage() {
   };
 
   const handleSaveNewUser = () => {
-    createUser({ toRedirect: true });
+    createUser();
   };
   const actions: DropDownListPageActionProps[] = [
     {

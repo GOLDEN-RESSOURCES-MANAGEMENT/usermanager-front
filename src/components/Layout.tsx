@@ -11,6 +11,7 @@ import { FaShieldAlt, FaUser } from "react-icons/fa";
 import { RxActivityLog } from "react-icons/rx";
 import { Popover } from "radix-ui";
 import { CiLogout } from "react-icons/ci";
+import { Select } from "radix-ui";
 import { Switch, Grid, Skeleton } from "@radix-ui/themes";
 import { DialogErrorSystemServeur } from "./Dialog";
 interface RouteItemProps {
@@ -300,13 +301,13 @@ type UpdateFileProps = {
   title?: string;
   inputType: InputType;
   name?: string;
-  error: any;
+  error?: any;
   disabled?: boolean;
   className?: string;
   col?: 1 | 2 | 3 | 4; // pour la grille
   value?: string | number | boolean;
   // onChange?: (setter, e) => void;
-  options?: { label: string; value: string }[]; // pour les selects
+  options?: { label: string; value: number }[]; // pour les selects
 };
 export const UpdateField = ({
   title,
@@ -317,8 +318,8 @@ export const UpdateField = ({
   className = "",
   col = 1,
   value,
+  options,
   onChange,
-  options = [],
 }: UpdateFileProps) => {
   const colspan = {
     1: "col-span-1",
@@ -349,15 +350,21 @@ export const UpdateField = ({
 
           {value !== undefined && value !== null && (
             <>
+              {JSON.stringify(options)}
+              {JSON.stringify(value)}
               {inputType === "select" && (
                 <select
                   disabled={disabled}
                   id={name}
                   name={name}
                   className="w-full border border-black/20 te p-2 rounded-md"
-                  value={value}
+                  value={value.id}
                   onChange={(e) =>
-                    onChange({ event: e, inputType: inputType, value: value })
+                    onChange?.({
+                      event: e,
+                      inputType: inputType,
+                      value: value,
+                    })
                   }
                 >
                   <option value="">-- Sélectionner --</option>
@@ -383,7 +390,7 @@ export const UpdateField = ({
                   )}
                   value={value}
                   onChange={(e) =>
-                    onChange({ event: e, inputType: inputType, value: value })
+                    onChange?.({ event: e, inputType: inputType, value: value })
                   }
                 />
               )}
@@ -396,16 +403,17 @@ export const UpdateField = ({
                   className="w-full border border-black/20 te p-2 rounded-md"
                   value={value}
                   onChange={(e) =>
-                    onChange({ event: e, inputType: inputType, value: value })
+                    onChange?.({ event: e, inputType: inputType, value: value })
                   }
                 ></textarea>
               )}
               {inputType === "switch" && (
                 <>
                   <Switch
+                    disabled={disabled}
                     checked={value}
                     onClick={(e) =>
-                      onChange({
+                      onChange?.({
                         inputType: inputType,
                         name: name,
                         value: value,

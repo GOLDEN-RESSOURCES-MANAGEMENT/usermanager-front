@@ -55,7 +55,7 @@ export function useUser({ userUuid }: { userUuid?: string }) {
     setLoading(false);
   }, [userUuid]);
 
-  const createUser = async ({ toRedirect }) => {
+  const createUser = async () => {
     if (loading) return;
     setError(null);
     setLoading(true);
@@ -79,29 +79,30 @@ export function useUser({ userUuid }: { userUuid?: string }) {
     setLoading(false);
   };
 
-  const updateUser = async ({ toRedirect }) => {
+  const updateUser = async () => {
     if (loading) return;
     setError(null);
     setLoading(true);
+    console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP",user);
     const { data, status, error } = await getData({
       endpoint: `/users/${userUuid}`,
       method: "PUT",
       data: user,
     });
     // Success
-    if ([SUCCESS_CODE, 201].includes(status)) {
-      if (toRedirect) {
-        redirect(route("usersmanage.users.view", { useruuid: data.data.id }));
-      }
+    if (fetchSuccess(status)) {
+      redirect(route("users.view", { useruuid: data.data.id }));
     }
     // Validation
-    if (status == VALIDATION_CODE) {
+    if (fetchValidationError(status)) {
       setError(error.data);
     }
     // Server Error
-    if (status >= SERVER_ERROR_CODE) {
+    if (fetchServerError(status)) {
       emitServerErrorEvent(status);
+      setError(null);
     }
+    setLoading(false);
   };
 
   const deleteUser = async () => {
@@ -111,12 +112,13 @@ export function useUser({ userUuid }: { userUuid?: string }) {
       method: "DELETE",
     });
     // Success
-    if ([SUCCESS_CODE, 201].includes(status)) {
+    if (fetchSuccess(status)) {
       redirect(route("users"));
     }
     // Server Error
-    if (status >= SERVER_ERROR_CODE) {
+    if (fetchServerError(status)) {
       emitServerErrorEvent(status);
+      setError(null);
     }
   };
 

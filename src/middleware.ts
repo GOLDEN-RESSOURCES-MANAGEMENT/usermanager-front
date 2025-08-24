@@ -8,7 +8,7 @@ const publicRouteList = ["/login"];
 export async function middleware(request: NextRequest) {
   // Vérification de la validité du token de l'utilisateur
 
-  await getData({ endpoint: "/users", method: "GET" });
+  await getData({ endpoint: "/me", method: "GET" });
   // Récupération de la session de l'utilsiateur
   const cookie = (await cookies()).get("session")?.value;
   const session = await decrypt(cookie);

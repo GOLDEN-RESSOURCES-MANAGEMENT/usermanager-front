@@ -24,7 +24,7 @@ export default function ListUserPage() {
     {
       label: "Modifier",
       type: "url",
-      url: "users.view",
+      url: "users.edit",
       params: (id: any) => ({
         useruuid: id,
       }),
@@ -54,7 +54,7 @@ export default function ListUserPage() {
       colType: "text",
     },
     {
-      accessorKey: "activate",
+      accessorKey: "active",
       header: "Status",
       colType: "text",
     },

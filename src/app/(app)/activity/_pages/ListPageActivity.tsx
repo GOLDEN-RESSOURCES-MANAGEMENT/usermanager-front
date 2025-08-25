@@ -13,87 +13,67 @@ export default function ListPageActivity() {
     label: string;
     type: "url" | "button";
   }
-  const actionsTable = [
-    {
-      label: "Afficher",
-      type: "url",
-      url: "users.view",
-      params: (id: any) => ({
-        useruuid: id,
-      }),
-    },
-    {
-      label: "Modifier",
-      type: "url",
-      url: "users.edit",
-      params: (id: any) => ({
-        useruuid: id,
-      }),
-    },
-  ];
+  // const actionsTable = [
+  //   {
+  //     label: "Afficher",
+  //     type: "url",
+  //     url: "users.view",
+  //     params: (id: any) => ({
+  //       useruuid: id,
+  //     }),
+  //   },
+  //   {
+  //     label: "Modifier",
+  //     type: "url",
+  //     url: "users.edit",
+  //     params: (id: any) => ({
+  //       useruuid: id,
+  //     }),
+  //   },
+  // ];
 
   //   Colonnes du tablaux
   const columns = [
     {
       accessorKey: "id",
+      accessorFn: (row) => row.id,
       header: "id",
       colType: "text",
     },
     {
-      accessorKey: "description",
+      accessorFn: (row) => row.description,
       header: "Description",
       colType: "text",
     },
     {
+      accessorFn: (row) => row.causeBy?.name,
       accessorKey: "causeBy.name",
       header: "Action par",
       colType: "text",
     },
     {
+      accessorFn: (row) => row.name,
       accessorKey: "sujet.name",
       header: "Sujet",
       colType: "text",
     },
     {
+      accessorFn: (row) => row.logAt,
       accessorKey: "logAt",
       header: "Date",
       colType: "text",
     },
-    // {
-    //   accessorKey: "name",
-    //   header: "Nom",
-    //   colType: "text",
-    // },
-    // {
-    //   accessorKey: "email",
-    //   header: "Email",
-    //   colType: "text",
-    // },
-    // {
-    //   accessorKey: "createdAt",
-    //   header: "Date de création",
-    //   colType: "text",
-    // },
-    // {
-    //   accessorKey: "active",
-    //   header: "Status",
-    //   colType: "text",
-    // },
-    // {
-    //   accessorKey: "action",
-    //   header: "Action",
-    //   colType: "dropdown",
-    // },
+
   ];
 
   // Actiond de la page
-  const actions: DropDownListPageActionProps[] = [
-    {
-      type: "url",
-      label: "Créer un utilisateur",
-      href: route("users.new"),
-    },
-  ];
+  // const actions: DropDownListPageActionProps[] = [
+  //   {
+  //     type: "url",
+  //     label: "Créer un utilisateur",
+  //     href: route("users.new"),
+  //   },
+  // ];
 
   return (
     <div className="space-y-12">
@@ -107,9 +87,8 @@ export default function ListPageActivity() {
           <MyTable
             route={["usersmanage.users.view", "useruuid"]}
             apiUrl="/activities"
-            tableTitle={"Client"}
+            tableTitle={"Historique d'activités"}
             cols={columns}
-            actionsTable={actionsTable}
           />
         </div>
       </PageLayoutBody>

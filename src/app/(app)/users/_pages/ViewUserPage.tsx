@@ -11,10 +11,12 @@ import {
 } from "@/components/Layout";
 import { useUser } from "@/hooks/useUser";
 import { route } from "@/libs/route";
+import { useAuthStore } from "@/libs/store";
 import { Grid } from "@radix-ui/themes";
 import React from "react";
 
 const ViewPageUser = ({ useruuid }) => {
+  const hasRole = useAuthStore((state) => state.hasRole);
   const { user, loading, deleteUser } = useUser({
     userUuid: useruuid,
   });
@@ -26,12 +28,15 @@ const ViewPageUser = ({ useruuid }) => {
   const actions: DropDownListPageActionProps[] = [
     {
       type: "url",
+      visible: hasRole("admin"),
       label: "Modifier",
       href: route("users.edit", { useruuid: useruuid }),
     },
     {
       type: "deleteAction",
       label: "Supprimer",
+      visible: hasRole("admin"),
+
       confirmationMessage: "Veuillez confirmer la suppression de l'utilisateur",
       action: handleDeleteAction,
       redirect: route("users"),

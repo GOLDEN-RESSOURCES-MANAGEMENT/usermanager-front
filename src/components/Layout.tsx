@@ -13,7 +13,11 @@ import { Popover } from "radix-ui";
 import { CiLogout } from "react-icons/ci";
 import { Select } from "radix-ui";
 import { Switch, Grid, Skeleton } from "@radix-ui/themes";
-import { DialogErrorSystemServeur } from "./Dialog";
+import { DialogErrorSystemServeur, LogoutActionModal } from "./Dialog";
+import { useAuthStore } from "@/libs/store";
+import { fetchSuccess } from "@/libs/helper";
+import { getData } from "@/libs/fetchData";
+import Buttons from "./Buttons";
 interface RouteItemProps {
   title: string;
   href: string;
@@ -22,15 +26,40 @@ interface RouteItemProps {
 }
 
 export const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
+  const { setUser, user } = useAuthStore.getState();
+  const userStore = useAuthStore((state) => state.user);
+  const setUserStore = useAuthStore((state) => state.setUser);
+  const setRoleStore = useAuthStore((state) => state.setRole);
+  const roleStore = useAuthStore((state) => state.role);
+
+  React.useEffect(() => {
+    const dd = async () => {
+      const { status, data, error } = await getData({ endpoint: "/me" });
+      if (fetchSuccess(status)) {
+        setUserStore(data.data);
+        setRoleStore(data?.data?.role[0]);
+      }
+    };
+    dd();
+  }, []);
+  // const { user } = useAuthStore();
   return (
     <div className="">
       <Menu />
-      <MaintContent>{children}</MaintContent>
+      <MaintContent user={userStore}>{children}</MaintContent>
+      AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      {JSON.stringify(roleStore)}
       <DialogErrorSystemServeur />
     </div>
   );
 };
-const MaintContent = ({ children }: { children: React.ReactNode }) => {
+const MaintContent = ({
+  user,
+  children,
+}: {
+  user: any;
+  children: React.ReactNode;
+}) => {
   const [value, setValue] = React.useState("");
   return (
     <div className="ms-[300px]   ">
@@ -56,8 +85,8 @@ const MaintContent = ({ children }: { children: React.ReactNode }) => {
               <div className="w-[250px] py-2 divide-y">
                 {/* Information de l'utilisateur */}
                 <div className="px-4 py-2">
-                  <p>Administrateur</p>
-                  <p>aadmin@maf.com</p>
+                  <p>{user?.name}</p>
+                  <p>{user?.email}</p>
                 </div>
 
                 {/* Page profil utilisateur */}
@@ -75,18 +104,19 @@ const MaintContent = ({ children }: { children: React.ReactNode }) => {
                   </Link>
                 </div>
                 {/* Deconnexion */}
-                <div className="p-2">
-                  <Link
-                    href={"/logout"}
-                    className={
-                      "p-2  flex items-center gap-3 rounded-md w-full hover:text-white hover:bg-primary"
-                    }
-                  >
-                    <Icon size="sm">
-                      <FaUser />
-                    </Icon>
-                    {"Déconnexion"}
-                  </Link>
+                <div className="p-2 w-full ">
+                  <LogoutActionModal className="w-full">
+                    <div
+                      className={
+                        "p-2  flex  items-center gap-3 rounded-md w-full hover:text-white hover:bg-primary"
+                      }
+                    >
+                      <Icon size="sm">
+                        <FaUser />
+                      </Icon>
+                      {"Déconnexion"}
+                    </div>
+                  </LogoutActionModal>
                 </div>
               </div>
             </Popover.Content>

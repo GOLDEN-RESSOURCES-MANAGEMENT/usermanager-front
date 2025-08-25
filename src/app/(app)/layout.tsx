@@ -1,12 +1,9 @@
-import { useAuthStore } from "@/libs/store";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import "../globals.css";
 import "@radix-ui/themes/styles.css";
 import { DefaultLayout } from "@/components/Layout";
 import { Theme } from "@radix-ui/themes";
-import { getData } from "@/libs/fetchData";
-import { fetchSuccess } from "@/libs/helper";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -27,11 +24,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { setUser } = useAuthStore.getState();
-  const { status, data, error } = await getData({ endpoint: "/me" });
-  if (fetchSuccess(status)) {
-  }
-
   return (
     <html lang="en">
       <body
@@ -39,7 +31,7 @@ export default async function RootLayout({
       >
         <div className="">
           <Theme>
-            <DefaultLayout>{children}</DefaultLayout>
+            <DefaultLayout >{children}</DefaultLayout>
           </Theme>
         </div>
       </body>

@@ -10,12 +10,14 @@ export type DropDownListPageActionProps =
   | {
       type: "url" | "button"; // url ou button => href obligatoire
       label: string;
+      visible: any;
       href: string;
       icon?: React.ReactNode;
     }
   | {
       type: "saveAction" | "deleteAction"; // saveAction => action obligatoire
       label: string;
+      visible: any;
       loading: boolean;
       confirmation?: boolean;
       confirmationMessage?: string;
@@ -57,40 +59,42 @@ export function DropDownListPage({
         >
           {/* {children} */}
 
-          {actions.map((action, index) => {
-            if (["saveAction"].includes(action.type)) {
+          {actions
+            .filter((element) => element.visible)
+            .map((action, index) => {
+              if (["saveAction"].includes(action.type)) {
+                return (
+                  <Popover.Close
+                    key={index}
+                    // disabled={action.loading}
+                    onClick={action.action}
+                    className={clsx(
+                      "rounded-md block w-full  cursor-pointer p-3  border-0 hover:bg-primary hover:text-white"
+                    )}
+                  >
+                    <div className="flex gap-3 items-center">
+                      <span className={clsx(!action.loading ? "hidden" : "")}>
+                        <LiaSpinnerSolid className="animate-spin scale-150" />
+                      </span>
+                      <span>{action.label}</span>
+                    </div>
+                  </Popover.Close>
+                );
+              }
+              if (["deleteAction"].includes(action.type)) {
+                return <DeleteAction key={index} action={action} />;
+              }
               return (
                 <Popover.Close
                   key={index}
-                  // disabled={action.loading}
-                  onClick={action.action}
-                  className={clsx(
-                    "rounded-md block w-full  cursor-pointer p-3  border-0 hover:bg-primary hover:text-white"
-                  )}
+                  className="block w-full rounded-md cursor-pointer text-left  border-0 hover:bg-primary hover:text-white  "
                 >
-                  <div className="flex gap-3 items-center">
-                    <span className={clsx(!action.loading ? "hidden" : "")}>
-                      <LiaSpinnerSolid className="animate-spin scale-150" />
-                    </span>
-                    <span>{action.label}</span>
-                  </div>
+                  <Link className="block p-3" href={action.href}>
+                    {action.label}
+                  </Link>
                 </Popover.Close>
               );
-            }
-            if (["deleteAction"].includes(action.type)) {
-              return <DeleteAction key={index} action={action} />;
-            }
-            return (
-              <Popover.Close
-                key={index}
-                className="block w-full rounded-md cursor-pointer text-left  border-0 hover:bg-primary hover:text-white  "
-              >
-                <Link className="block p-3" href={action.href}>
-                  {action.label}
-                </Link>
-              </Popover.Close>
-            );
-          })}
+            })}
           <Popover.Arrow className="fill-white" />
         </Popover.Content>
       </Popover.Root>

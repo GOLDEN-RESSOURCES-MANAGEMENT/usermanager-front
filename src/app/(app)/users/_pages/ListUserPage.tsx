@@ -7,10 +7,12 @@ import {
 import { PageLayoutBody, PageLayoutHeader } from "@/components/Layout";
 import MyTable from "@/components/Table";
 import { route } from "@/libs/route";
+import { useAuthStore } from "@/libs/store";
 import React from "react";
 import { TbReload } from "react-icons/tb";
 
 export default function ListUserPage() {
+  const hasRole = useAuthStore((state) => state.hasRole);
   interface ActionTableProps {
     label: string;
     type: "url" | "button";
@@ -19,6 +21,7 @@ export default function ListUserPage() {
     {
       label: "Afficher",
       type: "url",
+      visible: true,
       url: "users.view",
       params: (id: any) => ({
         useruuid: id,
@@ -26,6 +29,7 @@ export default function ListUserPage() {
     },
     {
       label: "Modifier",
+      visible: hasRole("admin"),
       type: "url",
       url: "users.edit",
       params: (id: any) => ({
@@ -37,26 +41,31 @@ export default function ListUserPage() {
   //   Colonnes du tablaux
   const columns = [
     {
+      accessorFn: (row) => row.id,
       accessorKey: "id",
       header: "id",
       colType: "text",
     },
     {
+      accessorFn: (row) => row.name,
       accessorKey: "name",
       header: "Nom",
       colType: "text",
     },
     {
+      accessorFn: (row) => row.email,
       accessorKey: "email",
       header: "Email",
       colType: "text",
     },
     {
+      accessorFn: (row) => row.createdAt,
       accessorKey: "createdAt",
       header: "Date de création",
       colType: "text",
     },
     {
+      accessorFn: (row) => row.active,
       accessorKey: "active",
       header: "Status",
       colType: "badge",
@@ -72,7 +81,7 @@ export default function ListUserPage() {
       },
     },
     {
-      accessorKey: "role[0]",
+      accessorFn: (row) => row.role?.[0]?.name,
       header: "Role",
       colType: "text",
     },
@@ -87,6 +96,7 @@ export default function ListUserPage() {
   const actions: DropDownListPageActionProps[] = [
     {
       type: "url",
+      visible: hasRole("admin"),
       label: "Créer un utilisateur",
       href: route("users.new"),
     },
@@ -94,8 +104,7 @@ export default function ListUserPage() {
 
   return (
     <div className="space-y-12">
-      <PageLayoutHeader className="flex justify-between">
-        dd
+      <PageLayoutHeader className="flex justify-end">
         <DropDownListPage actions={actions} />
       </PageLayoutHeader>
       <PageLayoutBody>
@@ -103,7 +112,7 @@ export default function ListUserPage() {
           <MyTable
             route={["usersmanage.users.view", "useruuid"]}
             apiUrl="/users"
-            tableTitle={"Client"}
+            tableTitle={"Utilisateurs"}
             cols={columns}
             actionsTable={actionsTable}
           />

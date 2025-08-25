@@ -1,7 +1,8 @@
 "use server";
 import axios from "axios";
 import { cookies } from "next/headers";
-import { decrypt } from "./session";
+import { decrypt, deleteSession } from "./session";
+import { UNAUTHORIRED_CODE } from "./contants";
 
 export const postData = async (endpoint) => {
   const cookie = await verifyTokenExiste();
@@ -66,8 +67,8 @@ const errorResponse = (err) => {
       data: "",
     };
   }
-  if (err.response?.status == 401) {
-    deleteUserSession(err);
+  if (err.response?.status == UNAUTHORIRED_CODE) {
+    deleteSession();
   }
   // console.log(
   //   "000000000000000000000",
@@ -78,8 +79,4 @@ const errorResponse = (err) => {
     status: err.response?.status,
     error: err.response?.data,
   };
-};
-
-const deleteUserSession = async (response: any) => {
-  if (response.status == 401) (await cookies()).delete("session");
 };

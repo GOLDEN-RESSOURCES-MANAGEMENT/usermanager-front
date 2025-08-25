@@ -9,8 +9,8 @@ interface AuthState {
   setUser: (user: User | null) => void;
   setRole: (role: Role | null) => void;
   //   setPermissions: (permissions: Permission[]) => void;
-  hasRole: (role: Role) => boolean;
-  reset: () => void;
+  hasRole: (role: string) => boolean;
+  // reset: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -18,10 +18,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   role: null,
   //   permissions: [],
 
-  setUser: (user) => set({ user }),
+  setUser: (user) => {
+    console.log("setUser", user);
+    set({ user });
+  },
   setRole: (role) => set({ role }),
-  //   setPermissions: (permissions) => set({ permissions }),
 
-  hasRole: (role) => get().role === role,
-  reset: () => set({ user: null, role: null, permissions: [] }),
+  hasRole: (role) => get().role?.name === role,
+  // reset: () => set({ user: null, role: null, permissions: [] }),
 }));

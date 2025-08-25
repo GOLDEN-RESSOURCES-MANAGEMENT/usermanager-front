@@ -208,13 +208,14 @@ const TableBody = ({ loading, cols, data, actionsTable }): React.ReactNode => {
               .filter((col) => col.accessorKey !== "id")
               .map((col, index) => (
                 <td className="py-3 px-6" key={index}>
-                  {col.accessorKey}
                   {/* {JSON.stringify(daaaa)} */}
-                  {col.colType !== "badge" &&
-                    getValuePathData(daaaa, col.accessorKey)}
+                  {col.colType == "text" && col.accessorFn?.(daaaa)}
                   {col.colType === "badge" && (
                     // <div>defpefpel</div>
-                    <BadgeColumns badgeValue={daaaa[col.accessorKey]} badgeEnum={col.enum} />
+                    <BadgeColumns
+                      badgeValue={col.accessorFn?.(daaaa)}
+                      badgeEnum={col.enum}
+                    />
                   )}
                   {col.colType === "dropdown" && (
                     <DropDownActionTable
@@ -486,8 +487,8 @@ const BadgeColumns = ({ badgeValue, badgeEnum }) => {
     >
       {badgeEnum[badgeValue].title}
     </span>
-  )
-}
+  );
+};
 
 const DropDownActionTable = ({ rowId, title, actions, icon }) => {
   return (
@@ -508,25 +509,27 @@ const DropDownActionTable = ({ rowId, title, actions, icon }) => {
           "bg-white w-[250px]  relative z-20 space-y-2 text-sm shadow-lg rounded-lg p-1"
         )}
       >
-        {actions.map((action, index) => {
-          return (
-            <DropdownMenu.Item
-              key={index}
-              className="rounded-md  data-[disabled]:pointer-events-none data-[highlighted]:bg-primary data-[highlighted]:text-white data-[disabled]:text-blue-300 data-[highlighted]:text-violet1"
-            >
-              {/* <Link className=" block p-3" href={action.href}> */}
-              {action.type == "url" && (
-                <Link
-                  className=" block p-3"
-                  href={route(action.url, action.params(rowId))}
-                >
-                  {action.label}
-                </Link>
-              )}
-              {/* </Link> */}
-            </DropdownMenu.Item>
-          );
-        })}
+        {actions
+          .filter((element) => element.visible)
+          .map((action, index) => {
+            return (
+              <DropdownMenu.Item
+                key={index}
+                className="rounded-md  data-[disabled]:pointer-events-none data-[highlighted]:bg-primary data-[highlighted]:text-white data-[disabled]:text-blue-300 data-[highlighted]:text-violet1"
+              >
+                {/* <Link className=" block p-3" href={action.href}> */}
+                {action.type == "url" && (
+                  <Link
+                    className=" block p-3"
+                    href={route(action.url, action.params(rowId))}
+                  >
+                    {action.label}
+                  </Link>
+                )}
+                {/* </Link> */}
+              </DropdownMenu.Item>
+            );
+          })}
         <DropdownMenu.Arrow className="fill-white" />
       </DropdownMenu.Content>
     </DropdownMenu.Root>

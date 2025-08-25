@@ -1,7 +1,7 @@
 import z from "zod";
 import axios from "axios";
 import { redirect } from "next/navigation";
-import { createSession } from "@/libs/session";
+import { createSession, deleteSession } from "@/libs/session";
 
 const SignupFormSchema = z.object({
   email: z
@@ -71,4 +71,10 @@ export const signUp = async (state, formData) => {
     await createSession(data);
     redirect("/");
   }
+};
+
+export const logout = async (state, formData) => {
+  await deleteSession();
+
+  redirect("/ogin");
 };

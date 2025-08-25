@@ -91,7 +91,6 @@ const MyTable = ({
     const response = await getData({
       endpoint: url,
     });
-    console.log(response.data);
     if (response.status == 200) {
       const { data } = response;
       setdata(data.data.items);

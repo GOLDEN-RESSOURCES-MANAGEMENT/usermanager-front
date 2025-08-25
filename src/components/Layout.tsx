@@ -47,8 +47,7 @@ export const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="">
       <Menu />
       <MaintContent user={userStore}>{children}</MaintContent>
-      AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-      {JSON.stringify(roleStore)}
+      {/* {JSON.stringify(roleStore)} */}
       <DialogErrorSystemServeur />
     </div>
   );

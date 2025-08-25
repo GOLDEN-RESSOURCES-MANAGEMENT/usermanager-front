@@ -50,10 +50,16 @@ export const signUp = async (state, formData) => {
     })
     .catch((error) => {
       // Identifiant incorrect ou erreur serveur
+      if (!error.response) {
+        return (data = {
+          status: "No Code",
+          message: "Une erreur est survement veillez contacter l'administrateur",
+        });
+      }
       if (error.response.status == 401) {
         data = {
           status: error.response.status,
-          message: "Les identificant de connexion sont incorrects",
+          message: error.response.data.message,
         };
       } else {
         data = {

@@ -19,7 +19,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   //   permissions: [],
 
   setUser: (user) => {
-    console.log("setUser", user);
     set({ user });
   },
   setRole: (role) => set({ role }),

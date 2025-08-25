@@ -160,7 +160,7 @@ export const LogoutActionModal = ({
                   suppressHydrationWarning
                 >
                   <Buttons
-                    title="Confirmer"
+                    title="Annuler"
                     className="w-full"
                     type="primary"
                     variant="solid"
@@ -174,7 +174,7 @@ export const LogoutActionModal = ({
                     "rounded-lg w-full font-semibold h-11 cursor-pointer "
                   )}
                 >
-                  Se connecter
+                  Confirmer
                 </button>
               </div>
             </form>

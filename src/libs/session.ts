@@ -21,7 +21,6 @@ export const decrypt = async (session) => {
     return payload;
   } catch (error) {
     return null;
-    console.log("Echet de vérifiation", error);
   }
 };
 

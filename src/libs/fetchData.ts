@@ -39,6 +39,7 @@ export const getData = async (endpoint) => {
       return successResponse(res);
     })
     .catch((err) => {
+      console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", err.status);
       if (err.response) {
         return errorResponse(err);
       } else {
@@ -70,11 +71,7 @@ const errorResponse = (err) => {
   if (err.response?.status == UNAUTHORIRED_CODE) {
     deleteSession();
   }
-  // console.log(
-  //   "000000000000000000000",
-  //   err.response?.status,
-  //   err.response?.data
-  // );
+
   return {
     status: err.response?.status,
     error: err.response?.data,

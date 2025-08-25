@@ -83,14 +83,12 @@ export function useUser({ userUuid }: { userUuid?: string }) {
     if (loading) return;
     setError(null);
     setLoading(true);
-    console.log(user);
     const { data, status, error } = await postData({
       endpoint: `/users/${userUuid}`,
       method: "PUT",
       data: user,
     });
     // Success
-    console.log(error);
     if (fetchSuccess(status)) {
       redirect(route("users.view", { useruuid: data.data.id }));
     }

@@ -12,6 +12,8 @@
       opacity: 1;
     }
   }
+
+  
   @keyframes dialogClosed {
     0% {
       opacity: 1;

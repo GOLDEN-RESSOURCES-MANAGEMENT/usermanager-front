@@ -33,14 +33,25 @@ export default function NewUserPage() {
       loading: loading,
     },
   ];
+
+  const roleOptions = [
+    {
+      label: "Admin",
+      value: 1,
+    },
+    {
+      label: "User",
+      value: 2,
+    },
+  ];
   return (
     <div className="space-y-12">
       <PageLayoutHeader className="flex justify-end">
         <DropDownListPage actions={actions} />
       </PageLayoutHeader>
       {/* PAGE CONTENT */}
-      {JSON.stringify(user)}
-      {JSON.stringify(error)}
+      {/* {JSON.stringify(user)} */}
+      {/* {JSON.stringify(error)} */}
       {/* TABLE DATA */}
       <PageLayoutBody className="space-y-5">
         <Content title="Information de l'utilisateur">
@@ -55,7 +66,8 @@ export default function NewUserPage() {
               onChange={handleChange}
             />
             <UpdateField
-              inputType="text"
+              inputType="select"
+              options={roleOptions}
               title="Role"
               name="role"
               error={error}

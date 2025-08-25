@@ -116,16 +116,16 @@ const Menu = () => {
         </Icon>
       ),
     },
-    {
-      pathStict: true,
-      title: "Rôles et permission",
-      href: "/roles",
-      icon: (
-        <Icon size="md">
-          <FaShieldAlt />
-        </Icon>
-      ),
-    },
+    // {
+    //   pathStict: true,
+    //   title: "Rôles et permission",
+    //   href: "/roles",
+    //   icon: (
+    //     <Icon size="md">
+    //       <FaShieldAlt />
+    //     </Icon>
+    //   ),
+    // },
     {
       pathStict: false,
       title: "Utilisateurs",
@@ -347,11 +347,11 @@ export const UpdateField = ({
           {(value === undefined || value === null) && (
             <Skeleton className="rounded-xl" width="100%" height="40px" />
           )}
-
+          {JSON.stringify(value)}
           {value !== undefined && value !== null && (
             <>
-              {JSON.stringify(options)}
-              {JSON.stringify(value)}
+              {/* {JSON.stringify(options)} */}
+              {/* {JSON.stringify(value)} */}
               {inputType === "select" && (
                 <select
                   disabled={disabled}

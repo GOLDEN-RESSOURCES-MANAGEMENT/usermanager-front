@@ -7,11 +7,11 @@ export const postData = async (endpoint) => {
   const cookie = await verifyTokenExiste();
 
   return axios({
-    method: "POST",
+    method: endpoint.method ?? "POST",
     url: process.env.NEXT_PUBLIC_API_URL + endpoint.endpoint,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${cookie?.data.token}`,
+      Authorization: `Bearer ${cookie?.data?.token}`,
     },
     data: endpoint.data,
   })
@@ -25,13 +25,14 @@ export const postData = async (endpoint) => {
 
 export const getData = async (endpoint) => {
   const cookie = await verifyTokenExiste();
-  return axios({
+  return await axios({
     method: endpoint.method ?? "GET",
     url: process.env.NEXT_PUBLIC_API_URL + endpoint.endpoint,
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${cookie?.data.token}`,
+      Authorization: `Bearer ${cookie?.data?.token}`,
     },
+    data: endpoint.data ?? null,
   })
     .then((res) => {
       return successResponse(res);
@@ -68,11 +69,11 @@ const errorResponse = (err) => {
   if (err.response?.status == 401) {
     deleteUserSession(err);
   }
-  console.log(
-    "000000000000000000000",
-    err.response?.status,
-    err.response?.data
-  );
+  // console.log(
+  //   "000000000000000000000",
+  //   err.response?.status,
+  //   err.response?.data
+  // );
   return {
     status: err.response?.status,
     error: err.response?.data,

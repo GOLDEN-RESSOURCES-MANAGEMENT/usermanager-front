@@ -91,6 +91,7 @@ const MyTable = ({
     const response = await getData({
       endpoint: url,
     });
+    console.log(response.data);
     if (response.status == 200) {
       const { data } = response;
       setdata(data.data.items);
@@ -131,7 +132,6 @@ const MyTable = ({
                 <Searchbar url={url} handleUpdateUrl={handleUpdateUrl} />
               </div>
             </div>
-
             <DropdownMenu.Root>
               <DropdownMenu.Trigger className="cursor-pointer outline-none">
                 <Icon size="lg">
@@ -139,17 +139,6 @@ const MyTable = ({
                 </Icon>
               </DropdownMenu.Trigger>
               <DropdownMenu.Content className="bg-white w-[500px] space-y-2 text-sm shadow-lg rounded-lg p-1">
-                {/* <Grid
-                  gap={"3"}
-                  columns={table
-                    .getAllColumns()
-                    .filter((col) => col.columnDef.meta?.filterVariant)
-                    .length.toString()}
-                >
-                  {table.getAllColumns().map((column, index) => (
-                    <Filter key={index} column={column} />
-                  ))}
-                </Grid> */}
                 <DropdownMenu.Arrow className="fill-white" />
               </DropdownMenu.Content>
             </DropdownMenu.Root>
@@ -219,10 +208,13 @@ const TableBody = ({ loading, cols, data, actionsTable }): React.ReactNode => {
               .filter((col) => col.accessorKey !== "id")
               .map((col, index) => (
                 <td className="py-3 px-6" key={index}>
+                  {col.accessorKey}
+                  {/* {JSON.stringify(daaaa)} */}
                   {col.colType !== "badge" &&
                     getValuePathData(daaaa, col.accessorKey)}
                   {col.colType === "badge" && (
-                    <BadgeColumns type={daaaa[col.accessorKey]} />
+                    // <div>defpefpel</div>
+                    <BadgeColumns badgeValue={daaaa[col.accessorKey]} badgeEnum={col.enum} />
                   )}
                   {col.colType === "dropdown" && (
                     <DropDownActionTable
@@ -483,43 +475,19 @@ const PaginationUi = ({
 
 export default MyTable;
 
-const BadgeColumns = ({ type }) => {
-  const variantValue = {
-    en_attente: {
-      key: "en_attente",
-      value: "En attente",
-      color: "text-gray-900 bg-gray-200",
-    },
-    en_cours: {
-      key: "en_cours",
-      value: "En cours",
-      color: "text-blue-900 bg-blue-200",
-    },
-    termine: {
-      key: "termine",
-      value: "Terminé",
-      color: "text-red-900 bg-red-200",
-    },
-    validated: {
-      key: "validated",
-      value: "Validé",
-      color: "text-green-900 bg-green-200",
-    },
-  };
-
+const BadgeColumns = ({ badgeValue, badgeEnum }) => {
   return (
     <span
       className={clsx(
-        variantValue[type]
-          ? variantValue[type].color
-          : "text-gray-900 bg-gray-200",
-        "bg-blue-200 font-semibold text-center  text-blue-900 rounded-md px-5 py-1"
+        badgeEnum[badgeValue].color,
+        "text-gray-900 bg-gray-200",
+        "text-center  rounded-xl px-5 py-0.5 text-sm"
       )}
     >
-      {variantValue[type] ? variantValue[type].value : type}
+      {badgeEnum[badgeValue].title}
     </span>
-  );
-};
+  )
+}
 
 const DropDownActionTable = ({ rowId, title, actions, icon }) => {
   return (

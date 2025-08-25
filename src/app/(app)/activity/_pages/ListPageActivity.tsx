@@ -1,5 +1,4 @@
 "use client";
-import Buttons from "@/components/Buttons";
 import {
   DropDownListPage,
   DropDownListPageActionProps,
@@ -8,9 +7,8 @@ import { PageLayoutBody, PageLayoutHeader } from "@/components/Layout";
 import MyTable from "@/components/Table";
 import { route } from "@/libs/route";
 import React from "react";
-import { TbReload } from "react-icons/tb";
 
-export default function ListUserPage() {
+export default function ListPageActivity() {
   interface ActionTableProps {
     label: string;
     type: "url" | "button";
@@ -42,45 +40,50 @@ export default function ListUserPage() {
       colType: "text",
     },
     {
-      accessorKey: "name",
-      header: "Nom",
+      accessorKey: "description",
+      header: "Description",
       colType: "text",
     },
     {
-      accessorKey: "email",
-      header: "Email",
+      accessorKey: "causeBy.name",
+      header: "Action par",
       colType: "text",
     },
     {
-      accessorKey: "createdAt",
-      header: "Date de création",
+      accessorKey: "sujet.name",
+      header: "Sujet",
       colType: "text",
     },
     {
-      accessorKey: "active",
-      header: "Status",
-      colType: "badge",
-      enum: {
-        true: {
-          title: "active",
-          color: "text-green-900 bg-green-200",
-        },
-        false: {
-          title: "Inactif",
-          color: "text-red-900 bg-red-200",
-        },
-      },
-    },
-    {
-      accessorKey: "role[0]",
-      header: "Role",
+      accessorKey: "logAt",
+      header: "Date",
       colType: "text",
     },
-    {
-      accessorKey: "action",
-      header: "Action",
-      colType: "dropdown",
-    },
+    // {
+    //   accessorKey: "name",
+    //   header: "Nom",
+    //   colType: "text",
+    // },
+    // {
+    //   accessorKey: "email",
+    //   header: "Email",
+    //   colType: "text",
+    // },
+    // {
+    //   accessorKey: "createdAt",
+    //   header: "Date de création",
+    //   colType: "text",
+    // },
+    // {
+    //   accessorKey: "active",
+    //   header: "Status",
+    //   colType: "text",
+    // },
+    // {
+    //   accessorKey: "action",
+    //   header: "Action",
+    //   colType: "dropdown",
+    // },
   ];
 
   // Actiond de la page
@@ -95,14 +98,15 @@ export default function ListUserPage() {
   return (
     <div className="space-y-12">
       <PageLayoutHeader className="flex justify-between">
-        dd
-        <DropDownListPage actions={actions} />
+        {/* dd */}
+        ddpok
+        {/* <DropDownListPage actions={actions} /> */}
       </PageLayoutHeader>
       <PageLayoutBody>
         <div className="bg-white space-y-3  rounded-lg shadow">
           <MyTable
             route={["usersmanage.users.view", "useruuid"]}
-            apiUrl="/users"
+            apiUrl="/activities"
             tableTitle={"Client"}
             cols={columns}
             actionsTable={actionsTable}
